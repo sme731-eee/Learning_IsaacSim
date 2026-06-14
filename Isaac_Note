@@ -3,58 +3,76 @@ isaac sim基本操作
 	       isaacsim
 运行isaac lab：./isaaclab.sh -p scripts/tutorials/00_sim/create_empty.py --experience isaacsim.exp.full.kit
 
-Building a Simple Robot
-鼠标操作：
-	移动：按住右键按钮，使用 WASD 键在视窗内控制摄像机的前进、后退、左移和右移。
-	按住鼠标右键，然后使用 Q 和 E 键来控制摄像头上下移动。
-	旋转：按住右键按钮，然后拖动以旋转摄像头视图。
-	缩放：可以使用鼠标滚轮进行放大或缩小场景。或者按住 Alt 键和右键按钮也可以实现相同的效果。
-	平移：按住鼠标中键，然后拖动以水平和垂直方向移动摄像头视图。
+一、Building a Simple Robot
+	(1)鼠标操作：
+		移动：按住右键按钮，使用 WASD 键在视窗内控制摄像机的前进、后退、左移和右移。
+		按住鼠标右键，然后使用 Q 和 E 键来控制摄像头上下移动。
+		旋转：按住右键按钮，然后拖动以旋转摄像头视图。
+		缩放：可以使用鼠标滚轮进行放大或缩小场景。或者按住 Alt 键和右键按钮也可以实现相同的效果。
+		平移：按住鼠标中键，然后拖动以水平和垂直方向移动摄像头视图。
 
-物理属性：
-	create--physics--physics scene,然后cube（或其他对象）要进行物理属性的添加（add）此时会下落，但是也会穿过平面；
-	create--physics--ground plane,然后cube（或其他对象）添加Colliders Preset
+	(2)物理属性：
+		create--physics--physics scene,然后cube（或其他对象）要进行物理属性的添加（add）此时会下落，但是也会穿过平面；
+		create--physics--ground plane,然后cube（或其他对象）添加Colliders Preset
 	
-车轮关节&小车运动：
-	Local Position 0：关节原点相对于车身（Body0）局部坐标系的位置
-	Local Ratation 0: 关节坐标系相对于车身（Body0）局部坐标系的旋转
-	Local Position 1: 关节原点相对于车轮（Body1）局部坐标系的位置
-	Local Rotation 1: 关节坐标系相对于车轮（Body1）局部坐标系的旋转
+	(3)车轮关节&小车运动：
+		Local Position 0：关节原点相对于车身（Body0）局部坐标系的位置
+		Local Ratation 0: 关节坐标系相对于车身（Body0）局部坐标系的旋转
+		Local Position 1: 关节原点相对于车轮（Body1）局部坐标系的位置
+		Local Rotation 1: 关节坐标系相对于车轮（Body1）局部坐标系的旋转
 	
-	
-Controlling the Robot
-	On Playback Tick:Play时，每一帧都会执行操作，向后续节点发送信号
-	Differential Controller:该节点根据输入值来计算机器人的速度指令；左侧的引脚允许其他节点连接计算出的数值，而右侧则显示经过该节点处理后的计算结果。
-	Articulation Controller：根据微分控制器的计算值来控制机器人的关节向前或向后移动
-	MakeArray:
-	
-	控制速度：通过Differential Controller的desired linear velocity来进行控制
-	
-	配置键盘操作：Use Keyboard Control
-		     新增节点：Input Nodes
-		     
-		 
-添加传感器：
-	配置RGB传感器：Create--Camera--安装RGB摄像头后，Perspective选择相机并查看视角；Windows中选择viewpoint2，即有第二个视窗
-	配置二维激光雷达传感器：主菜单中选择Create--Sensors--PhysXLidar--Rotating;在Raw USD内enable "Draw Lines"和"Draw Points"
+	(4)Controlling the Robot
+		On Playback Tick:Play时，每一帧都会执行操作，向后续节点发送信号
+		Differential Controller:该节点根据输入值来计算机器人的速度指令；左侧的引脚允许其他节点连接计算出的数值，而右侧则显示经过该节点处理后的计算结果。
+		Articulation Controller：根据微分控制器的计算值来控制机器人的关节向前或向后移动
+		MakeArray:创造数组
+		控制速度：通过Differential Controller的desired linear velocity来进行控制
+		配置键盘操作：Use Keyboard Control
+		     	 
+	(5)添加传感器：
+		配置RGB传感器：Create--Camera--安装RGB摄像头后，Perspective选择相机并查看视角；Windows中选择viewpoint2，即有第二个视窗
+		配置二维激光雷达传感器：主菜单中选择Create--Sensors--PhysXLidar--Rotating;在Raw USD内enable "Draw Lines"和"Draw Points"
 	
 
-
-访问数据：
-	创建Action Graph:是一个用于定义“行为逻辑”的节点网络；
-	雷达信息获取：通过创建节点，选择lidar,启动rviz2
+	(6)访问数据：
+		创建Action Graph:是一个用于定义“行为逻辑”的节点网络；
+		雷达信息获取：通过创建节点，选择lidar,启动rviz2
 	
 
+二、Ingesting Robot Assets and Simulating Your Robot in Isaac Sim
+	（1）导入Carter的urdf:在下拉菜单中，点击 Import
+	（2）用于Isaac Sim的感知模型训练的合成数据生成
+	（3）合成数据生成：域随机化---确保纹理、颜色、光照条件、物体姿势等特征存在足够的差异性
+	（4）域随机化遇到的困难：主要原因是领域差异，包括1）外观差异：合成图像与真实图像在像素层之间的差异；2）内容差距：合成数据与真实世界数据之间场景整体构成的变化；
+	（5）Replicator：合成数据生成引擎
+	
 
-
-Ingesting Robot Assets and Simulating Your Robot in Isaac Sim
-	导入Carter的urdf:在下拉菜单中，点击 Import
+三、在Isaac Sim游戏中开发 Software-in-the-Loop
+	(1)Software-in-the-Loop：把真实的控制算法代码，与仿真环境中的被控对象模型连接起来，进行闭环测试
 	
-	
-	
-用于Isaac Sim的感知模型训练的合成数据生成
-	合成数据生成：域随机化---确保纹理、颜色、光照条件、物体姿势等特征存在足够的差异性
-	域随机化遇到的困难：主要原因是领域差异，包括1）外观差异：合成图像与真实图像在像素层之间的差异；2）内容差距：合成数据与真实世界数据之间场景整体构成的变化；
-	Replicator：合成数据生成引擎
+	(2)使用OmniGraph节点构建动作图：
+		OmniGraph：图形化的逻辑编程框架，其中ActionGraph是动作图
+		On Playback Tick:程序触发器
+		ROS2 Context：建立并配置ROS2的通信环境
+		ROS2 Subscribe Twist:接收ROS2的话题，输出Angular_Velocity和Linear_Velocity。是一个事件驱动型节点，不会主动执行，需要接收执行脉冲（Tick）
+		Break 3-Vector:线速度和角速度分别都是三维向量;ex:Linear_Velocity中提取X分量（代表前进/后退），Angular_Velocity中提取Z分量（代表左右旋转）
+		Scale To/From Stage Units:单位换算器
+		Make Array:将需要传输的数据打包成一个数组格式
+		Differential Controller:差分控制器。输入目标线速度和角速度，输出左右轮所需速度
+		Articulation COntroller:关节控制器。指定RobotPath及具体JointNames,持续接收命令并执行。将速度值应用于机器人的各个轮子
+		Constant Token:提供固定数值，为控制器提供物理参数，比如轮距，轮子半径。该节点指定了应该控制哪些关节
+		
+	(3)开始模拟过程：
+		1）点击播放按钮Play
+		2）开启新终端输入命令：source /opt/ros/humble/setup.bash
+				      ros2 topic list；列出当前 ROS2 系统中所有活跃的话题（Topic）
+				            话题：/cmd_vel
+		3）发送命令：ros2 topic pub /cmd_vel geometry_msgs/Twist "{'linear': {'x': 0.2, 'y': 0.0, 'z': 0.0}, 'angular': {'x': 0.0, 'y': 0.0, 'z': 0.0}}"
+		4）用键盘模拟：下载teleop_twist_keyboard包
+		
+	（4）基于Pthon的Isaac Sim脚本基础教程
+		1）Script Editor:Isaac Sim图形界面中内置的Python编辑器，通过它直接在仿真环境中编写和运行脚本。Tab Menu--Add Tab--创建多个标签页
+		2）代码模式：USD API或IsaacSim API
+		
 	
 	
